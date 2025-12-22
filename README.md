@@ -4,10 +4,9 @@ A skill for creating and enhancing snowflake semantic views in SQL.
 
 ## Usage
 
-Review the instructions of your ide, to see how to invoke this skill. Generally, you can invoke it by typing a command like:
+Review the instructions of your IDE, to see how to invoke this skill, or any Skill.
 
-```@codex use snowflake-semantic-view-skill
-```
+You can read more about Skills in the [Skills documentation](https://agentskills.io/home).
 
 ## Example 
 
