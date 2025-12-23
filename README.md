@@ -20,12 +20,14 @@ Or you could use Claude Desktop which also supports skills: [Using Skills in Cla
 
 Each one is different, so please refer to the documentation of your IDE.
 
+**VScode with Github Copilot users:** Support for skills is only available in VsCodeInsisders edition. More details available here: [Skills in VSCodeInsiders](https://code.visualstudio.com/docs/copilot/customization/agent-skills#_create-a-skill)
+
 For VScode with Codex IDE extension,  just clone this repo and open it.
 
 And click in the order shown here:
 
 ![alt text](image.png)
-## Example 
+## Example output 
 
 For this prompt:
 
