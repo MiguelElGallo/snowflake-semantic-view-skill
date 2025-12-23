@@ -8,6 +8,19 @@ Review the instructions of your IDE, to see how to invoke this skill, or any Ski
 
 You can read more about Skills in the [Skills documentation](https://agentskills.io/home).
 
+For example:
+You can use VScode with Codex IDE extension which support skills: [Custom skills](https://developers.openai.com/codex/skills/create-skill)
+(this is the one I used)
+
+Or you could use Claude Desktop which also supports skills: [Using Skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude)
+
+Each one is different, so please refer to the documentation of your IDE.
+
+For VScode with Codex IDE extension,  just clone this repo and open it.
+
+And click in the order shown here:
+
+![alt text](image.png)
 ## Example 
 
 For this prompt:
