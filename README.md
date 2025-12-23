@@ -2,6 +2,10 @@
 
 A skill for creating and enhancing snowflake semantic views in SQL.
 
+## Contributing
+
+Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Usage
 
 Review the instructions of your IDE, to see how to invoke this skill, or any Skill.
