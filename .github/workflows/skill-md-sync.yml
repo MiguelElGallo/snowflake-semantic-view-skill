@@ -1,6 +1,7 @@
 name: Validate SKILL.md Copies
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - "**/SKILL.md"
