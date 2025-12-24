@@ -43,124 +43,56 @@ SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.SUPPLIER
 For example the response with GPT 5.2-codex could be:
 
 ```SQL
-CREATE OR REPLACE SEMANTIC VIEW CONTROL.PUBLIC.SEMVIEW_ORDER__tmp_validate
-  TABLES (
-    orders AS SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS
-      PRIMARY KEY (O_ORDERKEY)
-      WITH SYNONYMS ('orders', 'order header')
-      COMMENT = 'Orders fact table.',
-    customer AS SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER
-      PRIMARY KEY (C_CUSTKEY)
-      WITH SYNONYMS ('customers', 'customer master')
-      COMMENT = 'Customers dimension table.',
-    lineitem AS SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM
-      PRIMARY KEY (L_ORDERKEY, L_LINENUMBER)
-      WITH SYNONYMS ('line items', 'order lines')
-      COMMENT = 'Order line items fact table.',
-    supplier AS SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.SUPPLIER
-      PRIMARY KEY (S_SUPPKEY)
-      WITH SYNONYMS ('suppliers', 'vendors')
-      COMMENT = 'Suppliers dimension table.',
-    nation AS SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.NATION
-      PRIMARY KEY (N_NATIONKEY)
-      WITH SYNONYMS ('nations', 'countries')
-      COMMENT = 'Nations dimension table.',
-    region AS SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.REGION
-      PRIMARY KEY (R_REGIONKEY)
-      WITH SYNONYMS ('regions')
-      COMMENT = 'Regions dimension table.'
-  )
-  RELATIONSHIPS (
-    orders (O_CUSTKEY) REFERENCES customer (C_CUSTKEY),
-    lineitem (L_ORDERKEY) REFERENCES orders (O_ORDERKEY),
-    lineitem (L_SUPPKEY) REFERENCES supplier (S_SUPPKEY),
-    customer (C_NATIONKEY) REFERENCES nation (N_NATIONKEY),
-    supplier (S_NATIONKEY) REFERENCES nation (N_NATIONKEY),
-    nation (N_REGIONKEY) REFERENCES region (R_REGIONKEY)
-  )
-  FACTS (
-    orders.order_total_price AS orders.O_TOTALPRICE
-      WITH SYNONYMS ('order total', 'total price')
-      COMMENT = 'Total price of the order (order-level).',
-    lineitem.line_quantity AS lineitem.L_QUANTITY
-      WITH SYNONYMS ('quantity', 'line quantity')
-      COMMENT = 'Quantity ordered on the line item.',
-    lineitem.line_extended_price AS lineitem.L_EXTENDEDPRICE
-      WITH SYNONYMS ('extended price', 'line extended price')
-      COMMENT = 'Extended price for the line item.',
-    lineitem.line_discount AS lineitem.L_DISCOUNT
-      WITH SYNONYMS ('discount', 'line discount')
-      COMMENT = 'Discount applied to the line item.',
-    lineitem.line_tax AS lineitem.L_TAX
-      WITH SYNONYMS ('tax', 'line tax')
-      COMMENT = 'Tax applied to the line item.'
-  )
-  DIMENSIONS (
-    orders.order_key AS orders.O_ORDERKEY
-      WITH SYNONYMS ('order id', 'order number')
-      COMMENT = 'Unique identifier for the order.',
-    orders.order_date AS orders.O_ORDERDATE
-      WITH SYNONYMS ('order date', 'purchase date')
-      COMMENT = 'Date the order was placed.',
-    orders.order_status AS orders.O_ORDERSTATUS
-      WITH SYNONYMS ('status', 'order status')
-      COMMENT = 'Status code for the order.',
-    orders.order_priority AS orders.O_ORDERPRIORITY
-      WITH SYNONYMS ('priority', 'order priority')
-      COMMENT = 'Priority assigned to the order.',
-    orders.ship_priority AS orders.O_SHIPPRIORITY
-      WITH SYNONYMS ('ship priority', 'shipping priority')
-      COMMENT = 'Shipping priority for the order.',
-    orders.clerk AS orders.O_CLERK
-      WITH SYNONYMS ('clerk', 'order clerk')
-      COMMENT = 'Clerk responsible for the order.',
-    customer.customer_key AS customer.C_CUSTKEY
-      WITH SYNONYMS ('customer id', 'customer key')
-      COMMENT = 'Unique identifier for the customer.',
-    customer.customer_name AS customer.C_NAME
-      WITH SYNONYMS ('customer name', 'name')
-      COMMENT = 'Customer name.',
-    customer.market_segment AS customer.C_MKTSEGMENT
-      WITH SYNONYMS ('segment', 'market segment')
-      COMMENT = 'Customer market segment.',
-    customer.phone AS customer.C_PHONE
-      WITH SYNONYMS ('phone', 'customer phone')
-      COMMENT = 'Customer phone number.',
-    supplier.supplier_key AS supplier.S_SUPPKEY
-      WITH SYNONYMS ('supplier id', 'supplier key')
-      COMMENT = 'Unique identifier for the supplier.',
-    supplier.supplier_name AS supplier.S_NAME
-      WITH SYNONYMS ('supplier name', 'vendor name')
-      COMMENT = 'Supplier name.',
-    nation.nation_name AS nation.N_NAME
-      WITH SYNONYMS ('nation', 'country')
-      COMMENT = 'Nation name.',
-    region.region_name AS region.R_NAME
-      WITH SYNONYMS ('region', 'region name')
-      COMMENT = 'Region name.'
-  )
-  METRICS (
-    orders.order_count AS COUNT(DISTINCT orders.O_ORDERKEY)
-      WITH SYNONYMS ('order count', 'orders')
-      COMMENT = 'Count of distinct orders.',
-    orders.order_revenue AS SUM(orders.O_TOTALPRICE)
-      WITH SYNONYMS ('order revenue', 'order total revenue')
-      COMMENT = 'Sum of order total price (order-level).',
-    orders.avg_order_value AS AVG(orders.O_TOTALPRICE)
-      WITH SYNONYMS ('average order value', 'avg order value')
-      COMMENT = 'Average order total price (order-level).',
-    lineitem.total_quantity AS SUM(lineitem.L_QUANTITY)
-      WITH SYNONYMS ('total quantity', 'units')
-      COMMENT = 'Sum of line item quantities.',
-    lineitem.total_extended_price AS SUM(lineitem.L_EXTENDEDPRICE)
-      WITH SYNONYMS ('total extended price', 'gross sales')
-      COMMENT = 'Sum of line item extended prices.',
-    lineitem.total_discount_amount AS SUM(lineitem.L_EXTENDEDPRICE * lineitem.L_DISCOUNT)
-      WITH SYNONYMS ('total discount', 'discount amount')
-      COMMENT = 'Total discount amount across line items.',
-    lineitem.net_revenue AS SUM(lineitem.L_EXTENDEDPRICE * (1 - lineitem.L_DISCOUNT))
-      WITH SYNONYMS ('net revenue', 'net sales')
-      COMMENT = 'Net revenue after discounts.'
-  )
-  COMMENT = 'Semantic view for TPCH orders with customer, supplier, and region context.';
+create or replace semantic view CONTROL.PUBLIC.SEMVIEW1
+	tables (
+		SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS primary key (O_ORDERKEY) with synonyms=('orders','order header') comment='Orders fact table (TPC-H).',
+		SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER primary key (C_CUSTKEY) with synonyms=('customers','customer master') comment='Customers dimension table (TPC-H).',
+		SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.LINEITEM primary key (L_ORDERKEY,L_LINENUMBER) with synonyms=('line items','order lines') comment='Line items fact table (TPC-H).',
+		SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.SUPPLIER primary key (S_SUPPKEY) with synonyms=('suppliers','vendors') comment='Suppliers dimension table (TPC-H).',
+		SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.NATION primary key (N_NATIONKEY) with synonyms=('nations','countries') comment='Nations dimension table (TPC-H).',
+		SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.REGION primary key (R_REGIONKEY) with synonyms=('regions') comment='Regions dimension table (TPC-H).'
+	)
+	relationships (
+		ORDERS(O_CUSTKEY) references CUSTOMER(C_CUSTKEY),
+		CUSTOMER(C_NATIONKEY) references NATION(N_NATIONKEY),
+		LINEITEM(L_ORDERKEY) references ORDERS(O_ORDERKEY),
+		LINEITEM(L_SUPPKEY) references SUPPLIER(S_SUPPKEY),
+		SUPPLIER(S_NATIONKEY) references NATION(N_NATIONKEY),
+		NATION(N_REGIONKEY) references REGION(R_REGIONKEY)
+	)
+	facts (
+		ORDERS.ORDER_TOTAL_PRICE as orders.O_TOTALPRICE with synonyms=('order total','total price') comment='Total price of the order.',
+		LINEITEM.LINE_QUANTITY as lineitem.L_QUANTITY with synonyms=('quantity','line quantity') comment='Quantity ordered on the line item.',
+		LINEITEM.LINE_EXTENDED_PRICE as lineitem.L_EXTENDEDPRICE with synonyms=('extended price','line extended price') comment='Extended price for the line item.',
+		LINEITEM.LINE_DISCOUNT as lineitem.L_DISCOUNT with synonyms=('discount','line discount') comment='Discount applied to the line item.',
+		LINEITEM.LINE_TAX as lineitem.L_TAX with synonyms=('tax','line tax') comment='Tax applied to the line item.'
+	)
+	dimensions (
+		ORDERS.ORDER_KEY as orders.O_ORDERKEY with synonyms=('order id','order number') comment='Unique identifier for the order.',
+		ORDERS.ORDER_DATE as orders.O_ORDERDATE with synonyms=('order date','purchase date') comment='Date the order was placed.',
+		ORDERS.ORDER_STATUS as orders.O_ORDERSTATUS with synonyms=('status','order status') comment='Status code for the order.',
+		ORDERS.ORDER_PRIORITY as orders.O_ORDERPRIORITY with synonyms=('priority','order priority') comment='Priority assigned to the order.',
+		ORDERS.SHIP_PRIORITY as orders.O_SHIPPRIORITY with synonyms=('ship priority','shipping priority') comment='Shipping priority for the order.',
+		ORDERS.CLERK as orders.O_CLERK with synonyms=('clerk','order clerk') comment='Clerk responsible for the order.',
+		CUSTOMER.CUSTOMER_KEY as customer.C_CUSTKEY with synonyms=('customer id','customer key') comment='Unique identifier for the customer.',
+		CUSTOMER.CUSTOMER_NAME as customer.C_NAME with synonyms=('customer name','name') comment='Customer name.',
+		CUSTOMER.MARKET_SEGMENT as customer.C_MKTSEGMENT with synonyms=('segment','market segment') comment='Customer market segment.',
+		CUSTOMER.PHONE as customer.C_PHONE with synonyms=('phone','customer phone') comment='Customer phone number.',
+		LINEITEM.LINE_NUMBER as lineitem.L_LINENUMBER with synonyms=('line number','line item number') comment='Line number on the order.',
+		SUPPLIER.SUPPLIER_KEY as supplier.S_SUPPKEY with synonyms=('supplier id','supplier key') comment='Unique identifier for the supplier.',
+		SUPPLIER.SUPPLIER_NAME as supplier.S_NAME with synonyms=('supplier name','vendor name') comment='Supplier name.',
+		SUPPLIER.PHONE as supplier.S_PHONE with synonyms=('supplier phone','vendor phone') comment='Supplier phone number.',
+		NATION.NATION_NAME as nation.N_NAME with synonyms=('nation','country') comment='Nation name.',
+		REGION.REGION_NAME as region.R_NAME with synonyms=('region','region name') comment='Region name.'
+	)
+	metrics (
+		ORDERS.ORDER_COUNT as COUNT(DISTINCT orders.O_ORDERKEY) with synonyms=('order count','orders') comment='Count of distinct orders.',
+		ORDERS.ORDER_REVENUE as SUM(orders.O_TOTALPRICE) with synonyms=('order revenue','order total revenue') comment='Sum of order total price.',
+		ORDERS.AVG_ORDER_VALUE as AVG(orders.O_TOTALPRICE) with synonyms=('average order value','avg order value') comment='Average order total price.',
+		LINEITEM.TOTAL_QUANTITY as SUM(lineitem.L_QUANTITY) with synonyms=('total quantity','units') comment='Sum of line item quantities.',
+		LINEITEM.TOTAL_EXTENDED_PRICE as SUM(lineitem.L_EXTENDEDPRICE) with synonyms=('total extended price','gross sales') comment='Sum of line item extended prices.',
+		LINEITEM.TOTAL_DISCOUNT_AMOUNT as SUM(lineitem.L_EXTENDEDPRICE * lineitem.L_DISCOUNT) with synonyms=('total discount','discount amount') comment='Total discount amount across line items.',
+		LINEITEM.NET_REVENUE as SUM(lineitem.L_EXTENDEDPRICE * (1 - lineitem.L_DISCOUNT)) with synonyms=('net revenue','net sales') comment='Net revenue after discounts.'
+	)
+	comment='Semantic view for TPCH orders with customer, supplier, and region context.';
 ```
