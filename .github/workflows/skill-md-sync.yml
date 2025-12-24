@@ -1,0 +1,56 @@
+name: Validate SKILL.md Copies
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "**/SKILL.md"
+      - ".github/workflows/skill-md-sync.yml"
+  pull_request:
+    paths:
+      - "**/SKILL.md"
+      - ".github/workflows/skill-md-sync.yml"
+
+jobs:
+  check-skill-md:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compare SKILL.md files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mapfile -t files < <(find . -name SKILL.md -print | sort)
+          if [[ ${#files[@]} -eq 0 ]]; then
+            echo "No SKILL.md files found."
+            exit 1
+          fi
+
+          echo "Found ${#files[@]} SKILL.md file(s):"
+          printf ' - %s\n' "${files[@]}"
+
+          ref="${files[0]}"
+          ref_hash=$(sha256sum "$ref" | awk '{print $1}')
+          status=0
+
+          for file in "${files[@]}"; do
+            file_hash=$(sha256sum "$file" | awk '{print $1}')
+            if [[ "$file_hash" != "$ref_hash" ]]; then
+              echo
+              echo "Mismatch: $file differs from $ref"
+              diff -u "$ref" "$file" || true
+              status=1
+            fi
+          done
+
+          if [[ $status -ne 0 ]]; then
+            echo
+            echo "SKILL.md files are not identical."
+            exit 1
+          fi
+
+          echo
+          echo "All SKILL.md files are identical."
