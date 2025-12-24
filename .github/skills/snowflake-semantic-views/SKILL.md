@@ -22,13 +22,14 @@ description: Create, alter, and validate Snowflake semantic views using Snowflak
    - Read Snowflake table/view/column comments first (preferred source):
      - https://docs.snowflake.com/en/sql-reference/sql/comment
    - If comments or synonyms are missing, ask whether you can create them, whether the user wants to provide text, or whether you should draft suggestions for approval.
-5. Create a temporary validation name (for example, append `__tmp_validate`) while keeping the same database and schema.
-6. Always validate by sending the DDL to Snowflake via Snowflake CLI before finalizing:
+5. Use select statement with distinct and limit max 1000 rows, for finding out relationships between fact and dimension tables. Also to find out the data types of the columns. And lastly to create more meaningful comments/synonyms for the columns.
+6. Create a temporary validation name (for example, append `__tmp_validate`) while keeping the same database and schema.
+7. Always validate by sending the DDL to Snowflake via Snowflake CLI before finalizing:
    - Use `snow sql` to execute the statement with the configured connection.
    - If flags differ by version, check `snow sql --help` and use the connection option shown there.
-7. If validation fails, iterate on the DDL and re-run the validation step until it succeeds.
-8. Apply the final DDL (create or alter) using the real semantic view name.
-9. Clean up any temporary semantic view created during validation.
+8. If validation fails, iterate on the DDL and re-run the validation step until it succeeds.
+9. Apply the final DDL (create or alter) using the real semantic view name.
+10. Clean up any temporary semantic view created during validation.
 
 ## Synonyms And Comments (Required)
 
