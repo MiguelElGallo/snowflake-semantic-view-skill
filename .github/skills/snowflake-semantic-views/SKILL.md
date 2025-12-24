@@ -29,7 +29,19 @@ description: Create, alter, and validate Snowflake semantic views using Snowflak
    - If flags differ by version, check `snow sql --help` and use the connection option shown there.
 8. If validation fails, iterate on the DDL and re-run the validation step until it succeeds.
 9. Apply the final DDL (create or alter) using the real semantic view name.
-10. Clean up any temporary semantic view created during validation.
+10. Run a sample query against the final semantic view to confirm it works as expected. It has a different SQL syntax as can be seen here: https://docs.snowflake.com/en/user-guide/views-semantic/querying#querying-a-semantic-view
+Example:
+
+```SQL
+SELECT * FROM SEMANTIC_VIEW(
+    my_semview_name
+    DIMENSIONS customer.customer_market_segment
+    METRICS orders.order_average_value
+  )
+  ORDER BY customer_market_segment;
+```
+
+11. Clean up any temporary semantic view created during validation.
 
 ## Synonyms And Comments (Required)
 
