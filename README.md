@@ -1,6 +1,17 @@
-# snowflake-semantic-view-skill
+# snowflake-semantic-view-skill ([demo video](https://www.youtube.com/watch?v=YEJjTyRQWe4))
 
-A skill for creating and enhancing snowflake semantic views in SQL.
+[![Demo video (click to open)](Video.png)](https://www.youtube.com/watch?v=YEJjTyRQWe4)
+
+Click the image above to open the demo video.
+
+A skill for creating and enhancing Snowflake semantic views in SQL.
+
+## What this does
+
+This skill helps you:
+
+- Generate a new Snowflake semantic view definition from one or more tables.
+- Enhance an existing semantic view with better naming, synonyms, comments, and metrics.
 
 ## Contributing
 
@@ -8,41 +19,46 @@ Contributions are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Usage
 
-Review the instructions of your IDE, to see how to invoke this skill, or any Skill.
+How you run a Skill depends on the client (IDE/app) you are using. Refer to your client’s documentation for how to invoke Skills.
 
 You can read more about Skills in the [Skills documentation](https://agentskills.io/home).
 
-For example:
-You can use VScode with Codex IDE extension which support skills: [Custom skills](https://developers.openai.com/codex/skills/create-skill)
-(this is the one I used)
+### Supported clients (examples)
 
-Or you could use Claude Desktop which also supports skills: [Using Skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude)
+- **VS Code + Codex IDE extension** (this is what this repo was tested with):
+  - [Custom skills](https://developers.openai.com/codex/skills/create-skill)
+- **Claude Desktop**:
+  - [Using Skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude)
 
-Each one is different, so please refer to the documentation of your IDE.
+Each client has different UX and setup steps, so follow the instructions for your specific client.
 
-**VScode with Github Copilot users:** Support for skills is only available in VsCodeInsisders edition. More details available here: [Skills in VSCodeInsiders](https://code.visualstudio.com/docs/copilot/customization/agent-skills#_create-a-skill)
+### Notes for VS Code GitHub Copilot users
 
-For VScode with Codex IDE extension,  just clone this repo and open it.
+Support for Skills is only available in **VS Code Insiders**. See: [Skills in VSCodeInsiders](https://code.visualstudio.com/docs/copilot/customization/agent-skills#_create-a-skill)
 
-And click in the order shown here:
+### Quick start (VS Code + Codex IDE extension)
 
-![alt text](image.png)
-## Example output 
+1. Clone this repo and open it in VS Code.
+2. Open the Skills UI and invoke this skill.
+3. Follow the UI flow shown in the screenshot:
+
+[![Codex IDE skill invocation flow](image.png)](https://www.youtube.com/watch?v=YEJjTyRQWe4)
+
+## Example output
 
 For this prompt:
 
-```log
+```text
 I want to create a semantic view based on SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS and
 SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.CUSTOMER and
 SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.REGION
 and
 SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.SUPPLIER
-
 ```
 
-For example the response with GPT 5.2-codex could be:
+An example response could be:
 
-```SQL
+```sql
 create or replace semantic view CONTROL.PUBLIC.SEMVIEW1
 	tables (
 		SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS primary key (O_ORDERKEY) with synonyms=('orders','order header') comment='Orders fact table (TPC-H).',
