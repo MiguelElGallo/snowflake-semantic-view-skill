@@ -43,7 +43,11 @@ Update 9-Jan-2026: [December 2025 (version 1.108)](https://code.visualstudio.com
 2. Open the Skills UI and invoke this skill.
 3. Follow the UI flow shown in the screenshot:
 
+Example using Codex IDE extension in VS Code:
 [![Codex IDE skill invocation flow](image.png)](https://www.youtube.com/watch?v=YEJjTyRQWe4)
+
+Example using GitHub Copilot Skills in VS Code:
+[![VsCode IDE skill invocation flow (click to open)](VsCodeSkill.png)](https://www.youtube.com/watch?v=YEJjTyRQWe4)
 
 ## Example output
 
