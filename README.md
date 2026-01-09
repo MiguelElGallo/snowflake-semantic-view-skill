@@ -34,7 +34,8 @@ Each client has different UX and setup steps, so follow the instructions for you
 
 ### Notes for VS Code GitHub Copilot users
 
-Support for Skills is only available in **VS Code Insiders**. See: [Skills in VSCodeInsiders](https://code.visualstudio.com/docs/copilot/customization/agent-skills#_create-a-skill)
+Update 9-Jan-2026: [December 2025 (version 1.108)](https://code.visualstudio.com/updates/v1_108) release of GitHub Copilot for VS Code added support for Skills.
+
 
 ### Quick start (VS Code + Codex IDE extension)
 
@@ -42,7 +43,11 @@ Support for Skills is only available in **VS Code Insiders**. See: [Skills in VS
 2. Open the Skills UI and invoke this skill.
 3. Follow the UI flow shown in the screenshot:
 
+Example using Codex IDE extension in VS Code:
 [![Codex IDE skill invocation flow](image.png)](https://www.youtube.com/watch?v=YEJjTyRQWe4)
+
+Example using GitHub Copilot Skills in VS Code:
+[![VsCode IDE skill invocation flow (click to open)](VsCodeSkill.png)](https://www.youtube.com/watch?v=YEJjTyRQWe4)
 
 ## Example output
 
