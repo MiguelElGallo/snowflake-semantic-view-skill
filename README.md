@@ -34,7 +34,8 @@ Each client has different UX and setup steps, so follow the instructions for you
 
 ### Notes for VS Code GitHub Copilot users
 
-Support for Skills is only available in **VS Code Insiders**. See: [Skills in VSCodeInsiders](https://code.visualstudio.com/docs/copilot/customization/agent-skills#_create-a-skill)
+Update 9-Jan-2026: [December 2025 (version 1.108)](https://code.visualstudio.com/updates/v1_108) release of GitHub Copilot for VS Code added support for Skills.
+
 
 ### Quick start (VS Code + Codex IDE extension)
 
