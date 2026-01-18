@@ -1,14 +1,14 @@
 ---
 name: snowflake-semantic-views
-description: Create, alter, and validate Snowflake semantic views using Snowflake CLI (snow). Use when asked to build or troubleshoot semantic views/semantic layer definitions with CREATE/ALTER SEMANTIC VIEW, to validate semantic-view DDL against Snowflake via CLI, or to guide Snowflake CLI installation and connection setup.
+description: Create, alter, and validate Snowflake semantic views using the Snowflake CLI (`snow`). Use when asked to build or troubleshoot semantic views or semantic layer definitions with CREATE/ALTER SEMANTIC VIEW, to validate semantic view DDL against Snowflake via the CLI, or to guide Snowflake CLI installation and connection setup.
 ---
 
 # Snowflake Semantic Views
 
 ## One-Time Setup
 
-- Verify Snowflake CLI installation by opening a new terminal and running `snow --help`.
-- If Snowflake CLI is missing or the user cannot install it, direct them to https://docs.snowflake.com/en/developer-guide/snowflake-cli/installation/installation.
+- Verify the Snowflake CLI installation by opening a new terminal and running `snow --help`.
+- If the Snowflake CLI is missing or the user cannot install it, direct them to https://docs.snowflake.com/en/developer-guide/snowflake-cli/installation/installation.
 - Configure a Snowflake connection with `snow connection add` per https://docs.snowflake.com/en/developer-guide/snowflake-cli/connecting/configure-connections#add-a-connection.
 - Use the configured connection for all validation and execution steps.
 
@@ -22,14 +22,14 @@ description: Create, alter, and validate Snowflake semantic views using Snowflak
    - Read Snowflake table/view/column comments first (preferred source):
      - https://docs.snowflake.com/en/sql-reference/sql/comment
    - If comments or synonyms are missing, ask whether you can create them, whether the user wants to provide text, or whether you should draft suggestions for approval.
-5. Use select statement with distinct and limit max 1000 rows, for finding out relationships between fact and dimension tables. Also to find out the data types of the columns. And lastly to create more meaningful comments/synonyms for the columns.
+5. Use a SELECT statement with DISTINCT and LIMIT (max 1,000 rows) to discover relationships between fact and dimension tables, identify column data types, and create more meaningful comments and synonyms for the columns.
 6. Create a temporary validation name (for example, append `__tmp_validate`) while keeping the same database and schema.
-7. Always validate by sending the DDL to Snowflake via Snowflake CLI before finalizing:
+7. Always validate by sending the DDL to Snowflake via the Snowflake CLI before finalizing:
    - Use `snow sql` to execute the statement with the configured connection.
    - If flags differ by version, check `snow sql --help` and use the connection option shown there.
 8. If validation fails, iterate on the DDL and re-run the validation step until it succeeds.
 9. Apply the final DDL (create or alter) using the real semantic view name.
-10. Run a sample query against the final semantic view to confirm it works as expected. It has a different SQL syntax as can be seen here: https://docs.snowflake.com/en/user-guide/views-semantic/querying#querying-a-semantic-view
+10. Run a sample query against the final semantic view to confirm it works as expected. Semantic views use a different SQL syntax, as shown here: https://docs.snowflake.com/en/user-guide/views-semantic/querying#querying-a-semantic-view
 Example:
 
 ```SQL
@@ -43,7 +43,7 @@ SELECT * FROM SEMANTIC_VIEW(
 
 11. Clean up any temporary semantic view created during validation.
 
-## Synonyms And Comments (Required)
+## Synonyms and Comments (Required)
 
 - Use the semantic view syntax for synonyms and comments:
 
@@ -60,7 +60,7 @@ COMMENT = 'comment_about_dim_fact_or_metric'
 
 ## Validation Pattern (Required)
 
-- Never skip validation. Always execute the DDL against Snowflake with Snowflake CLI before presenting it as final.
+- Never skip validation. Always execute the DDL against Snowflake with the Snowflake CLI before presenting it as final.
 - Prefer a temporary name for validation to avoid clobbering the real view.
 
 ## Example CLI Validation (Template)
@@ -70,7 +70,7 @@ COMMENT = 'comment_about_dim_fact_or_metric'
 snow sql -q "<CREATE OR ALTER SEMANTIC VIEW ...>" --connection <connection_name>
 ```
 
-If the CLI uses a different connection flag in your version, run:
+If the Snowflake CLI uses a different connection flag in your version, run:
 
 ```bash
 snow sql --help
