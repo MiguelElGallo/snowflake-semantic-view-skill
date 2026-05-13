@@ -115,7 +115,7 @@ create or replace semantic view CONTROL.PUBLIC.SEMVIEW1
 		LINEITEM.LINE_NUMBER as lineitem.L_LINENUMBER with synonyms=('line number','line item number') comment='Line number on the order.',
 		SUPPLIER.SUPPLIER_KEY as supplier.S_SUPPKEY with synonyms=('supplier id','supplier key') comment='Unique identifier for the supplier.',
 		SUPPLIER.SUPPLIER_NAME as supplier.S_NAME with synonyms=('supplier name','vendor name') comment='Supplier name.',
-		SUPPLIER.PHONE as supplier.C_PHONE with synonyms=('supplier phone','vendor phone') comment='Supplier phone number.',
+		SUPPLIER.PHONE as supplier.S_PHONE with synonyms=('supplier phone','vendor phone') comment='Supplier phone number.',
 		NATION.NATION_NAME as nation.N_NAME with synonyms=('nation','country') comment='Nation name.',
 		REGION.REGION_NAME as region.R_NAME with synonyms=('region','region name') comment='Region name.'
 	)
