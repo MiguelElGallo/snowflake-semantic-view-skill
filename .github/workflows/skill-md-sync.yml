@@ -1,56 +1,79 @@
-name: Validate SKILL.md Copies
+name: Validate Skill Package
 
 on:
   workflow_dispatch:
   push:
     paths:
-      - "**/SKILL.md"
+      - ".codex/skills/SKILL.md"
+      - ".github/skills/**"
       - ".github/workflows/skill-md-sync.yml"
   pull_request:
     paths:
-      - "**/SKILL.md"
+      - ".codex/skills/SKILL.md"
+      - ".github/skills/**"
       - ".github/workflows/skill-md-sync.yml"
 
 jobs:
-  check-skill-md:
+  validate-skill:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Compare SKILL.md files
+      - name: Validate packaged skill
         shell: bash
         run: |
           set -euo pipefail
 
-          mapfile -t files < <(find . -name SKILL.md -print | sort)
-          if [[ ${#files[@]} -eq 0 ]]; then
-            echo "No SKILL.md files found."
+          skill_dir=".github/skills/snowflake-semantic-views"
+          skill_file="$skill_dir/SKILL.md"
+
+          if [[ ! -f "$skill_file" ]]; then
+            echo "Missing $skill_file"
             exit 1
           fi
 
-          echo "Found ${#files[@]} SKILL.md file(s):"
-          printf ' - %s\n' "${files[@]}"
-
-          ref="${files[0]}"
-          ref_hash=$(sha256sum "$ref" | awk '{print $1}')
-          status=0
-
-          for file in "${files[@]}"; do
-            file_hash=$(sha256sum "$file" | awk '{print $1}')
-            if [[ "$file_hash" != "$ref_hash" ]]; then
-              echo
-              echo "Mismatch: $file differs from $ref"
-              diff -u "$ref" "$file" || true
-              status=1
-            fi
-          done
-
-          if [[ $status -ne 0 ]]; then
-            echo
-            echo "SKILL.md files are not identical."
+          if ! grep -q '^---$' "$skill_file"; then
+            echo "SKILL.md is missing YAML frontmatter delimiters."
             exit 1
           fi
 
-          echo
-          echo "All SKILL.md files are identical."
+          if ! grep -q '^name: snowflake-semantic-views$' "$skill_file"; then
+            echo "SKILL.md is missing the expected skill name."
+            exit 1
+          fi
+
+          if ! grep -q '^description: ' "$skill_file"; then
+            echo "SKILL.md is missing a description."
+            exit 1
+          fi
+
+          codex_skill=".codex/skills/SKILL.md"
+          if [[ ! -f "$codex_skill" ]]; then
+            echo "Missing $codex_skill"
+            exit 1
+          fi
+
+          if ! cmp -s "$skill_file" "$codex_skill"; then
+            echo "$codex_skill differs from $skill_file"
+            diff -u "$skill_file" "$codex_skill" || true
+            exit 1
+          fi
+
+          while IFS= read -r ref; do
+            [[ -e "$skill_dir/$ref" ]] || {
+              echo "SKILL.md references missing file: $ref"
+              exit 1
+            }
+          done < <(grep -oE 'references/[A-Za-z0-9._/-]+' "$skill_file" | sort -u)
+
+          while IFS= read -r script; do
+            PYTHONPYCACHEPREFIX=/tmp/python-cache python3 -m py_compile "$script"
+          done < <(find "$skill_dir/scripts" -name '*.py' -print)
+
+          if find "$skill_dir" -type f | grep -E '(^|/)(\.env|.*\.log|.*\.key|.*\.p8)$'; then
+            echo "Skill package contains a file that looks like credentials or logs."
+            exit 1
+          fi
+
+          echo "Skill package validation passed."

@@ -4,14 +4,27 @@
 
 Click the image above to open the demo video.
 
-A skill for creating and enhancing Snowflake semantic views in SQL.
+A skill for creating, validating, and improving Snowflake semantic views.
 
 ## What this does
 
 This skill helps you:
 
-- Generate a new Snowflake semantic view definition from one or more tables.
-- Enhance an existing semantic view with better naming, synonyms, comments, and metrics.
+- Generate a new Snowflake semantic view definition from one or more tables or SQL examples.
+- Validate SQL DDL and YAML semantic view specs against Snowflake before deployment.
+- Enhance an existing semantic view with better naming, synonyms, comments, relationships, metrics, filters, and verified queries.
+- Debug Cortex Analyst semantic-view behavior by comparing generated SQL to trusted SQL.
+
+## What's included
+
+- [SKILL.md](.github/skills/snowflake-semantic-views/SKILL.md) - the skill entry point and workflow router.
+- [SQL reference](.github/skills/snowflake-semantic-views/references/semantic-view-sql.md) - DDL, query, and validation reminders.
+- [YAML reference](.github/skills/snowflake-semantic-views/references/semantic-view-yaml.md) - verify-only and deploy workflow for semantic view YAML.
+- [FastGen reference](.github/skills/snowflake-semantic-views/references/fastgen-workflow.md) - FastGen-first creation workflow.
+- [VQR validation reference](.github/skills/snowflake-semantic-views/references/vqr-validation.md) - verified query compile and execution checks.
+- [Audit/debug reference](.github/skills/snowflake-semantic-views/references/audit-debug.md) - existing semantic view review and troubleshooting checklist.
+- [dbt reference](.github/skills/snowflake-semantic-views/references/dbt-semantic-views.md) - notes for the Snowflake Labs dbt semantic view materialization.
+- [YAML SQL helper](.github/skills/snowflake-semantic-views/scripts/build_yaml_procedure_sql.py) - builds safe `SYSTEM$CREATE_SEMANTIC_VIEW_FROM_YAML` calls from YAML files.
 
 ## Contributing
 
